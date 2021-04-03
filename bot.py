@@ -17,7 +17,7 @@ async def on_ready():
     print("Bot ready")
     bot.tts = pyttsx3.init()
     bot.tts.setProperty('rate', 140) 
-    bot.tts.setProperty('voice', bot.tts.getProperty('voices')[0].id)
+    bot.tts.setProperty('voice', "french")
 
 @bot.event
 async def on_message(message):
