@@ -1,4 +1,5 @@
-import discord,json,pyttsx3,asyncio
+import discord,json,asyncio
+from gtts import gTTS
 
 def load_config():
     with open("config.json","r") as file:
@@ -15,9 +16,6 @@ load_config()
 @bot.event
 async def on_ready():
     print("Bot ready")
-    bot.tts = pyttsx3.init()
-    bot.tts.setProperty('rate', 140) 
-    bot.tts.setProperty('voice', "french")
 
 @bot.event
 async def on_message(message):
@@ -27,9 +25,8 @@ async def on_message(message):
             if len(args)>0 and args[0]=="event" and message.author.guild_permissions.manage_messages:
                 max_participants=int(args[1])
             elif len(args)>0 and args[0]=="say" and message.author.guild_permissions.manage_messages and message.author.voice is not None:
-                
-                bot.tts.save_to_file(" ".join(args[1:]), 'temp.mp3')
-                bot.tts.runAndWait()
+                tts=gTTS(" ".join(args[1:]),lang="fr")
+                tts.save("temp.mp3")
                 if len(bot.voice_clients)>0:
                     voice=bot.voice_clients[0]
                     if voice.channel.id!=message.author.voice.channel.id:
