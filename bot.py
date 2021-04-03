@@ -24,7 +24,7 @@ async def on_message(message):
         try:
             if len(args)>0 and args[0]=="event" and message.author.guild_permissions.manage_messages:
                 max_participants=int(args[1])
-            elif len(args)>0 and args[0]=="say" and message.author.guild_permissions.manage_messages and message.author.voice is not None:
+            elif len(args)>0 and args[0]=="say" and message.author.voice is not None:
                 tts=gTTS(" ".join(args[1:]),lang="fr")
                 tts.save("temp.mp3")
                 if len(bot.voice_clients)>0:
