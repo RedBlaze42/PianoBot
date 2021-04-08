@@ -47,7 +47,7 @@ async def on_message(message):
 async def on_raw_message_delete(payload):
     events=[event for event in bot.events if event.message.channel.id==payload.channel_id and event.message.id == payload.message_id]
     if len(events)==1:
-        bot.remove(events[0])
+        bot.events.remove(events[0])
         await events[0].message.channel.send("L'évènement {} a été supprimé".format(events[0].name),delete_after=10)
 
 @bot.event
