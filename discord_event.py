@@ -20,7 +20,7 @@ class DiscordEvent():
             await cmd_message.channel.send("Le format de date n'est pas réspecté, piano fait un effort, exemple: {}".format(arrow.utcnow().to("Europe/Paris").format("HH:mm DD/MM/YYYY")))
             return None
         await cmd_message.delete()
-        embed = discord.Embed(title="Evènement du {}:".format(event_date.format("DD/MM à HH:mm")), colour=discord.Colour(0xff0000), timestamp=event_date.datetime)
+        embed = discord.Embed(title="Evènement du {}:".format(event_date.format("DD/MM à HH:mm")), colour=discord.Colour(0xff0000), timestamp=event_date.datetime, description="Aucun participant")
         message=await cmd_message.channel.send(embed=embed)
         await message.add_reaction("✅")
         await message.add_reaction("❌")
