@@ -40,18 +40,37 @@ async def on_message(message):
                 save_config()
             elif len(args)>0 and args[0]=="inscrit" and message.author.guild_permissions.manage_messages:
                 user=message.mentions[0]
-                event_id=max([event.message.id for event in bot.events if event.message.channel.id==message.channel.id])
-                event=[event for event in bot.events if event.message.id==event_id][0]
+                if args[1].isdigit():
+                    event=discord_event.event_from_id(bot.events,int(args[1]))
+                else:
+                    event=discord_event.find_event_in_channel(bot.events,int(message.channel.id))
+                if event is None: raise ValueError
+                
                 await event.add_participant(user.id)
                 await message.delete()
                 await message.channel.send("{} a été inscrit à l'évènement {}".format(user.name,event.name),delete_after=10)
             elif len(args)>0 and args[0]=="inscrit_top" and message.author.guild_permissions.manage_messages:
                 user=message.mentions[0]
-                event_id=max([event.message.id for event in bot.events if event.message.channel.id==message.channel.id])
-                event=[event for event in bot.events if event.message.id==event_id][0]
+                if args[1].isdigit():
+                    event=discord_event.event_from_id(bot.events,int(args[1]))
+                else:
+                    event=discord_event.find_event_in_channel(bot.events,int(message.channel.id))
+                if event is None: raise ValueError
+
                 await event.add_participant(user.id,top=True)
                 await message.delete()
                 await message.channel.send("{} a été inscrit en premier à l'évènement {}".format(user.name,event.name),delete_after=10)
+            elif len(args)>0 and args[0]=="désinscrit" and message.author.guild_permissions.manage_messages:
+                user=message.mentions[0]
+                if args[1].isdigit():
+                    event=discord_event.event_from_id(bot.events,int(args[1]))
+                else:
+                    event=discord_event.find_event_in_channel(bot.events,int(message.channel.id))
+                if event is None: raise ValueError
+
+                await event.remove_participant(user.id)
+                await message.delete()
+                await message.channel.send("{} a été désinscrit de l'évènement {}".format(user.name,event.name),delete_after=10)
             elif len(args)>0 and args[0]=="say" and message.author.voice is not None:
                 commands.say(message,args,bot)
         except (IndexError, ValueError):

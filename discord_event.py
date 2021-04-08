@@ -1,6 +1,17 @@
 import arrow,discord
 from discord import message
 
+def find_event_in_channel(events,channel_id):
+    event_ids=[event.message.id for event in events if event.message.channel.id==channel_id]
+    if len(event_ids)==0: return None
+    event=[event for event in events if event.message.id==max(event_ids)][0]
+    return event
+
+def event_from_id(events,message_id):
+    event=[event for event in events if event.message.id==message_id]
+    if len(event)==0: return None
+    return event[0]
+
 class DiscordEvent():
 
     def __init__(self,bot,event_date,max_participants,message,participants,name):
