@@ -20,7 +20,7 @@ class DiscordEvent():
             await cmd_message.channel.send("Le format de date n'est pas réspecté, piano fait un effort, exemple: {}".format(arrow.utcnow().to("Europe/Paris").format("HH:mm DD/MM/YYYY")))
             return None
         await cmd_message.delete()
-        embed = discord.Embed(title="Evènement du {}:".format(event_date.format("DD/MM à HH:mm")), colour=discord.Colour(0xff0000), timestamp=event_date.datetime, description="Aucun participant")
+        embed = discord.Embed(title="Evènement du {}:".format(event_date.format("DD/MM à HH:mm")), colour=discord.Colour(0xff0000), timestamp=event_date.datetime, description="Aucun participant, max {}".format(max_participants))
         message=await cmd_message.channel.send(embed=embed)
         await message.add_reaction("✅")
         await message.add_reaction("❌")
@@ -67,11 +67,12 @@ class DiscordEvent():
 
     async def update_message(self):
         embed = discord.Embed(title="Evènement du {}:".format(self.event_date.format("DD/MM à HH:mm")), colour=discord.Colour(0xff0000), timestamp=self.event_date.datetime)
+        embed.description="Max {} participants".format(self.max_participants)
         if len(self.participants)>0:
             participant_list="\n".join(["<@{}>".format(user_id) for user_id in self.participants[:self.max_participants]])
             embed.add_field(name="Participants:",value=participant_list)
         else:
-            embed.description="Aucun participant"
+            embed.description="Aucun participant, max {}".format(self.max_participants)
         if len(self.participants)>self.max_participants:
             participant_list="\n".join(["<@{}>".format(user_id) for user_id in self.participants[self.max_participants:]])
             embed.add_field(name="Remplacants:",value=participant_list)
