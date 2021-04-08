@@ -63,7 +63,7 @@ class DiscordEvent():
         self.active=False
 
     def to_json(self):
-        return {"channel_id":self.message.channel.id,"message_id":self.message.id,"event_date_timestamp":self.event_date.timestamp,"max_participants":self.max_participants,"participants":self.participants}
+        return {"channel_id":self.message.channel.id,"message_id":self.message.id,"event_date_timestamp":self.event_date.timestamp(),"max_participants":self.max_participants,"participants":self.participants}
 
     async def update_message(self):
         embed = discord.Embed(title="Evènement du {}:".format(self.event_date.format("DD/MM à HH:mm")), colour=discord.Colour(0xff0000), timestamp=self.event_date.datetime)
