@@ -3,13 +3,14 @@ from discord import message
 
 class DiscordEvent():
 
-    def __init__(self,bot,event_date,max_participants,message,participants):
+    def __init__(self,bot,event_date,max_participants,message,participants,name):
         self.bot=bot
         self.event_date=event_date
         self.max_participants=max_participants
         self.message=message
         self.participants=participants
         self.active=True
+        self.name=name
 
     @classmethod
     async def from_command(cls,args,cmd_message,bot):#Commande: 10 14:14 08/04/2021
@@ -19,19 +20,30 @@ class DiscordEvent():
         except arrow.parser.ParserError:
             await cmd_message.channel.send("Le format de date n'est pas réspecté, piano fait un effort, exemple: {}".format(arrow.utcnow().to("Europe/Paris").format("HH:mm DD/MM/YYYY")))
             return None
+        name=" ".join(args[2:])
+        if name=="": name="Evènement"
+
         await cmd_message.delete()
-        embed = discord.Embed(title="Evènement du {}:".format(event_date.format("DD/MM à HH:mm")), colour=discord.Colour(0xff0000), timestamp=event_date.datetime, description="Aucun participant, max {}".format(max_participants))
+        embed = discord.Embed(title="{} du {}:".format(name,event_date.format("DD/MM à HH:mm")), colour=discord.Colour(0xff0000), timestamp=event_date.datetime, description="Aucun participant, max {}".format(max_participants))
         message=await cmd_message.channel.send(embed=embed)
         await message.add_reaction("✅")
         await message.add_reaction("❌")
-        return cls(bot,event_date,max_participants,message,list())
+        return cls(bot,event_date,max_participants,message,list(),name)
 
     @classmethod
     async def from_json(cls,data,bot):
         channel=await bot.fetch_channel(data["channel_id"])
         message=await channel.fetch_message(data["message_id"])
         event_date=arrow.get(data["event_date_timestamp"]).to("Europe/Paris")
-        return cls(bot,event_date,data["max_participants"],message,data["participants"])
+        return cls(bot,event_date,data["max_participants"],message,data["participants"],data["name"])
+
+    def to_json(self):
+        return {"channel_id":self.message.channel.id,
+                "message_id":self.message.id,
+                "event_date_timestamp":self.event_date.timestamp(),
+                "max_participants":self.max_participants,
+                "participants":self.participants,
+                "name":self.name}
 
     async def add_participant(self,id):
         if not id in self.participants:
@@ -57,16 +69,13 @@ class DiscordEvent():
                         await reaction.remove(user)
 
     async def close(self):
-        #embed = discord.Embed(title="Evènement du {}:".format(self.event_date.format("DD/MM à HH:mm")), colour=discord.Colour(0x000000), description="Evènement terminé")
+        #embed = discord.Embed(title="{} du {}:".format(self.name,self.event_date.format("DD/MM à HH:mm")), colour=discord.Colour(0x000000), description="Evènement terminé")
         #await self.message.edit(embed=embed)
         await self.message.delete()
         self.active=False
 
-    def to_json(self):
-        return {"channel_id":self.message.channel.id,"message_id":self.message.id,"event_date_timestamp":self.event_date.timestamp(),"max_participants":self.max_participants,"participants":self.participants}
-
     async def update_message(self):
-        embed = discord.Embed(title="Evènement du {}:".format(self.event_date.format("DD/MM à HH:mm")), colour=discord.Colour(0xff0000), timestamp=self.event_date.datetime)
+        embed = discord.Embed(title="{} du {}:".format(self.name,self.event_date.format("DD/MM à HH:mm")), colour=discord.Colour(0xff0000), timestamp=self.event_date.datetime)
         embed.description="Max {} participants".format(self.max_participants)
         if len(self.participants)>0:
             participant_list="\n".join(["<@{}>".format(user_id) for user_id in self.participants[:self.max_participants]])
