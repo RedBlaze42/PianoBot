@@ -38,6 +38,13 @@ async def on_message(message):
                 event=await discord_event.DiscordEvent.from_command(args[1:],message,bot)
                 if event is not None: bot.events.append(event)
                 save_config()
+            elif len(args)>0 and args[0]=="inscrit":
+                user=message.mentions[0]
+                event_id=max([event.message.id for event in bot.events if event.message.channel.id==message.channel.id])
+                event=[event for event in bot.events if event.message.id==event_id][0]
+                await event.add_participant()
+                await message.delete()
+                await message.channel.send("{} a été inscrit à l'évènement {}".format(user.name,event.name))
             elif len(args)>0 and args[0]=="say" and message.author.voice is not None:
                 commands.say(message,args,bot)
         except (IndexError, ValueError):
