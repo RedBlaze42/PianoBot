@@ -20,7 +20,7 @@ class DiscordEvent():
         except arrow.parser.ParserError:
             await cmd_message.channel.send("Le format de date n'est pas réspecté, piano fait un effort, exemple: {}".format(arrow.utcnow().to("Europe/Paris").format("HH:mm DD/MM/YYYY")))
             return None
-        name=" ".join(args[2:])
+        name=" ".join(args[3:])
         if name=="": name="Evènement"
 
         await cmd_message.delete()
