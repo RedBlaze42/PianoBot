@@ -35,7 +35,8 @@ async def on_message(message):
         args=message.content.split(" ")[1:]
         try:
             if len(args)>0 and args[0]=="event" and message.author.guild_permissions.manage_messages:
-                bot.events.append(await discord_event.DiscordEvent.from_command(args[1:],message,bot))
+                event=await discord_event.DiscordEvent.from_command(args[1:],message,bot)
+                if event is not None: bot.events.append(event)
                 save_config()
             elif len(args)>0 and args[0]=="say" and message.author.voice is not None:
                 commands.say(message,args,bot)
