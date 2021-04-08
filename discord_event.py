@@ -45,9 +45,12 @@ class DiscordEvent():
                 "participants":self.participants,
                 "name":self.name}
 
-    async def add_participant(self,id):
+    async def add_participant(self,id,top=False):
         if not id in self.participants:
-            self.participants.append(id)
+            if top:
+                self.participants.insert(0,id)
+            else:
+                self.participants.append(id)
         await self.update_message()
 
     async def remove_participant(self,id):
