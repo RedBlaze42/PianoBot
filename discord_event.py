@@ -98,7 +98,7 @@ class DiscordEvent():
             embed.description="Aucun participant, max {}".format(self.max_participants)
         if len(self.participants)>self.max_participants:
             participant_list="\n".join(["<@{}>".format(user_id) for user_id in self.participants[self.max_participants:]])
-            embed.add_field(name="Remplacants:",value=participant_list)
+            embed.add_field(name="Remplaçants:",value=participant_list)
 
         await self.message.edit(embed=embed)
         await self.remove_reactions()
