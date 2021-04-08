@@ -75,7 +75,7 @@ async def on_message(message):
                 await message.channel.send(" ".join(args[1:]))
                 await message.delete()
             elif len(args)>0 and args[0]=="say" and message.author.voice is not None:
-                commands.say(message,args,bot)
+                await commands.say(message,args,bot)
         except (IndexError, ValueError):
             await message.channel.send("Mauvais paramètres")
 
