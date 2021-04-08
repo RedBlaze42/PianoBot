@@ -44,14 +44,14 @@ async def on_message(message):
                 event=[event for event in bot.events if event.message.id==event_id][0]
                 await event.add_participant(user.id)
                 await message.delete()
-                await message.channel.send("{} a été inscrit à l'évènement {}".format(user.name,event.name))
+                await message.channel.send("{} a été inscrit à l'évènement {}".format(user.name,event.name),delete_after=10)
             elif len(args)>0 and args[0]=="inscrit_top" and message.author.guild_permissions.manage_messages:
                 user=message.mentions[0]
                 event_id=max([event.message.id for event in bot.events if event.message.channel.id==message.channel.id])
                 event=[event for event in bot.events if event.message.id==event_id][0]
                 await event.add_participant(user.id,top=True)
                 await message.delete()
-                await message.channel.send("{} a été inscrit en premier à l'évènement {}".format(user.name,event.name))
+                await message.channel.send("{} a été inscrit en premier à l'évènement {}".format(user.name,event.name),delete_after=10)
             elif len(args)>0 and args[0]=="say" and message.author.voice is not None:
                 commands.say(message,args,bot)
         except (IndexError, ValueError):
@@ -63,6 +63,7 @@ async def on_raw_message_delete(payload):
     if len(events)==1:
         bot.events.remove(events[0])
         await events[0].message.channel.send("L'évènement {} a été supprimé".format(events[0].name),delete_after=10)
+        save_config()
 
 @bot.event
 async def on_raw_reaction_add(payload):
