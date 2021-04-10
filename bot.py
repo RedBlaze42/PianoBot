@@ -39,38 +39,38 @@ async def on_message(message):
                 if event is not None: bot.events.append(event)
                 save_config()
             elif len(args)>0 and args[0]=="inscrit" and message.author.guild_permissions.manage_messages:
-                user=message.mentions[0]
+                user_id=message.mentions[0].id if len(message.mentions)>0 else args[2]
                 if args[1].isdigit():
                     event=discord_event.event_from_id(bot.events,int(args[1]))
                 else:
                     event=discord_event.find_event_in_channel(bot.events,int(message.channel.id))
                 if event is None: raise ValueError
                 
-                await event.add_participant(user.id)
+                await event.add_participant(user_id)
                 await message.delete()
-                await message.channel.send("{} a été inscrit à l'évènement {}".format(user.name,event.name),delete_after=10)
+                await message.channel.send("Le membre a été inscrit à l'évènement {}".format(,event.name),delete_after=10)
             elif len(args)>0 and args[0]=="inscrit_top" and message.author.guild_permissions.manage_messages:
-                user=message.mentions[0]
+                user_id=message.mentions[0].id if len(message.mentions)>0 else args[2]
                 if args[1].isdigit():
                     event=discord_event.event_from_id(bot.events,int(args[1]))
                 else:
                     event=discord_event.find_event_in_channel(bot.events,int(message.channel.id))
                 if event is None: raise ValueError
 
-                await event.add_participant(user.id,top=True)
+                await event.add_participant(user_id,top=True)
                 await message.delete()
-                await message.channel.send("{} a été inscrit en premier à l'évènement {}".format(user.name,event.name),delete_after=10)
+                await message.channel.send("Le membre a été inscrit en premier à l'évènement {}".format(event.name),delete_after=10)
             elif len(args)>0 and args[0]=="désinscrit" and message.author.guild_permissions.manage_messages:
-                user=message.mentions[0]
+                user_id=message.mentions[0].id if len(message.mentions)>0 else args[2]
                 if args[1].isdigit():
                     event=discord_event.event_from_id(bot.events,int(args[1]))
                 else:
                     event=discord_event.find_event_in_channel(bot.events,int(message.channel.id))
                 if event is None: raise ValueError
 
-                await event.remove_participant(user.id)
+                await event.remove_participant(user_id)
                 await message.delete()
-                await message.channel.send("{} a été désinscrit de l'évènement {}".format(user.name,event.name),delete_after=10)
+                await message.channel.send("Le membre  a été désinscrit de l'évènement {}".format(event.name),delete_after=10)
             elif len(args)>0 and args[0]=="write" and message.author.voice is not None:
                 await message.channel.send(" ".join(args[1:]))
                 await message.delete()
