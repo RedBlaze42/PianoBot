@@ -48,7 +48,7 @@ async def on_message(message):
                 
                 await event.add_participant(user_id)
                 await message.delete()
-                await message.channel.send("Le membre a été inscrit à l'évènement {}".format(,event.name),delete_after=10)
+                await message.channel.send("Le membre a été inscrit à l'évènement {}".format(event.name),delete_after=10)
             elif len(args)>0 and args[0]=="inscrit_top" and message.author.guild_permissions.manage_messages:
                 user_id=message.mentions[0].id if len(message.mentions)>0 else args[2]
                 if args[1].isdigit():
