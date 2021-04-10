@@ -71,7 +71,7 @@ async def on_message(message):
                 await event.remove_participant(user_id)
                 await message.delete()
                 await message.channel.send("Le membre  a été désinscrit de l'évènement {}".format(event.name),delete_after=10)
-            elif len(args)>0 and args[0]=="write" and message.author.voice is not None:
+            elif len(args)>0 and args[0]=="write":
                 await message.channel.send(" ".join(args[1:]))
                 await message.delete()
             elif len(args)>0 and args[0]=="say" and message.author.voice is not None:

@@ -1,4 +1,4 @@
-
+from asyncio import sleep
 from gtts import gTTS
 import discord
 
@@ -14,5 +14,6 @@ async def say(message,args,bot):
                 voice = await message.author.voice.channel.connect()
         else:
             voice = await message.author.voice.channel.connect()
+        sleep(1000)
         source=discord.FFmpegPCMAudio("temp.mp3")
         voice.play(source, after=None)
