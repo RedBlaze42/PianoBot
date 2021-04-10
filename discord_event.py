@@ -67,7 +67,7 @@ class DiscordEvent():
     async def remove_participant(self, id, notif=True):
         if notif and id in self.participants[:self.max_participants]:
             next_participant = await self.bot.fetch_user(self.participants[self.max_participants])
-            await next_participant.send("Quelqu'un s'est désisté dans les participants de l'évènement {}, tu viens donc de rejoindre la liste principale !\nLien vers le message d'inscription: {}".format(self.name,self.message.jump_url))
+            await next_participant.send("Quelqu'un s'est désisté dans les participants de l'évènement **__{}__**, tu viens donc de rejoindre la liste principale !\nLien vers le message d'inscription: {}".format(self.name,self.message.jump_url))
 
         if id in self.participants:
             self.participants.remove(id)
