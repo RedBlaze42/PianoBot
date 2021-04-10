@@ -39,7 +39,7 @@ async def on_message(message):
                 if event is not None: bot.events.append(event)
                 save_config()
             elif len(args)>0 and args[0]=="inscrit" and message.author.guild_permissions.manage_messages:
-                user_id=message.mentions[0].id if len(message.mentions)>0 else args[2]
+                user_id=message.mentions[0].id if len(message.mentions)>0 else int(args[2])
                 if args[1].isdigit():
                     event=discord_event.event_from_id(bot.events,int(args[1]))
                 else:
@@ -50,7 +50,7 @@ async def on_message(message):
                 await message.delete()
                 await message.channel.send("Le membre a été inscrit à l'évènement {}".format(event.name),delete_after=10)
             elif len(args)>0 and args[0]=="inscrit_top" and message.author.guild_permissions.manage_messages:
-                user_id=message.mentions[0].id if len(message.mentions)>0 else args[2]
+                user_id=message.mentions[0].id if len(message.mentions)>0 else int(args[2])
                 if args[1].isdigit():
                     event=discord_event.event_from_id(bot.events,int(args[1]))
                 else:
@@ -61,7 +61,7 @@ async def on_message(message):
                 await message.delete()
                 await message.channel.send("Le membre a été inscrit en premier à l'évènement {}".format(event.name),delete_after=10)
             elif len(args)>0 and args[0]=="désinscrit" and message.author.guild_permissions.manage_messages:
-                user_id=message.mentions[0].id if len(message.mentions)>0 else args[2]
+                user_id=message.mentions[0].id if len(message.mentions)>0 else int(args[2])
                 if args[1].isdigit():
                     event=discord_event.event_from_id(bot.events,int(args[1]))
                 else:
