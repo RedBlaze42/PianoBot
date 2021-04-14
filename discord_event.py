@@ -94,7 +94,7 @@ class DiscordEvent():
 
     async def update_message(self):
         embed = discord.Embed(title="{} du {}:".format(self.name,self.event_date.format("DD/MM à HH:mm")), colour=discord.Colour(0xff0000), timestamp=self.event_date.datetime)
-        embed.description="Max {} participants".format(self.max_participants)
+        embed.description="{}/{} participants".format(len(self.participants),self.max_participants)
         if len(self.participants)>0:
             participant_list="\n".join(["<@{}>".format(user_id) for user_id in self.participants[:self.max_participants]])
             embed.add_field(name="Participants:",value=participant_list)
