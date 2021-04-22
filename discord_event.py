@@ -1,5 +1,6 @@
 import arrow,discord
 from discord import message
+import discord
 
 def find_event_in_channel(events,channel_id):
     event_ids=[event.message.id for event in events if event.message.channel.id==channel_id]
@@ -67,8 +68,10 @@ class DiscordEvent():
     async def remove_participant(self, id, notif=True):
         if notif and id in self.participants[:self.max_participants] and len(self.participants)>self.max_participants:
             next_participant = await self.bot.fetch_user(self.participants[self.max_participants])
-            await next_participant.send("Quelqu'un s'est désisté dans les participants de l'évènement **__{}__**, tu viens donc de rejoindre la liste principale !\nLien vers le message d'inscription: {}".format(self.name,self.message.jump_url))
-
+            try:
+                await next_participant.send("Quelqu'un s'est désisté dans les participants de l'évènement **__{}__**, tu viens donc de rejoindre la liste principale !\nLien vers le message d'inscription: {}".format(self.name,self.message.jump_url))
+            except discord.errors.Forbidden:
+                print("{} n'accepte pas les mp".format(next_participant.name))
         if id in self.participants:
             self.participants.remove(id)
         await self.update_message()
