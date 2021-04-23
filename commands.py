@@ -15,10 +15,10 @@ async def say(message,args,bot):
             if voice.channel.id!=message.author.voice.channel.id:
                 await voice.disconnect()
                 voice = await message.author.voice.channel.connect()
-                await sleep(1000)
+                await sleep(2)
         else:
             voice = await message.author.voice.channel.connect()
-            await sleep(1000)
+            await sleep(2)
         
         source=discord.FFmpegPCMAudio("temp.mp3")
         voice.play(source, after=None)
