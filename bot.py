@@ -31,7 +31,7 @@ async def refresh_events():
 
 @bot.event
 async def on_message(message):
-    if not message.author.bot and message.guild.id==bot.config["server"] and message.content.startswith("!piano"):
+    if message.guild is not None and not message.author.bot and message.guild.id==bot.config["server"] and message.content.startswith("!piano"):
         args=message.content.split(" ")[1:]
         try:
             if len(args)>0 and args[0]=="event" and message.author.guild_permissions.manage_messages:
