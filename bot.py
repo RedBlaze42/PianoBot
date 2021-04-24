@@ -89,7 +89,7 @@ async def on_message(message):
                     if channel is not None:
                         await commands.say(message,args[1:],bot,channel)
                 elif len(args)==1 and args[0]=="disconnect":
-                    commands.disconnect(bot)
+                    await commands.disconnect(bot)
         except (IndexError, ValueError):
             await message.channel.send("Mauvais paramètres")
 
