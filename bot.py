@@ -78,7 +78,7 @@ async def on_message(message):
                 await commands.say(message,args,bot,message.author.voice.channel)
         except (IndexError, ValueError):
             await message.channel.send("Mauvais paramètres")
-    elif message.channel.type==discord.ChannelType.private and message.author.id in ["153201272399462400"]:
+    elif message.channel.type is discord.ChannelType.private and message.author.id in [153201272399462400]:
         try:
             if message.content.startswith("!piano"):
                 args=message.content.split(" ")[1:]
