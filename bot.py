@@ -76,6 +76,8 @@ async def on_message(message):
                 await message.delete()
             elif len(args)>0 and args[0]=="say" and message.author.voice is not None:
                 await commands.say(message,args,bot,message.author.voice.channel)
+            elif len(args)==1 and args[0]=="disconnect":
+                    commands.disconnect(bot)
         except (IndexError, ValueError):
             await message.channel.send("Mauvais paramètres")
     elif message.channel.type is discord.ChannelType.private and message.author.id in [153201272399462400]:
@@ -86,6 +88,8 @@ async def on_message(message):
                     channel=await bot.fetch_channel(args[1])
                     if channel is not None:
                         await commands.say(message,args[1:],bot,channel)
+                elif len(args)==1 and args[0]=="disconnect":
+                    commands.disconnect(bot)
         except (IndexError, ValueError):
             await message.channel.send("Mauvais paramètres")
 

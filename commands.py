@@ -22,3 +22,8 @@ async def say(message,args,bot,channel):
         
         source=discord.FFmpegPCMAudio("temp.mp3")
         voice.play(source, after=None)
+
+async def disconnect(bot):
+    if len(bot.voice_clients)>0:
+        voice=bot.voice_clients[0]
+        await voice.disconnect()
