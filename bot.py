@@ -75,7 +75,17 @@ async def on_message(message):
                 await message.channel.send(" ".join(args[1:]))
                 await message.delete()
             elif len(args)>0 and args[0]=="say" and message.author.voice is not None:
-                await commands.say(message,args,bot)
+                await commands.say(message,args,bot,message.author.voice.channel)
+        except (IndexError, ValueError):
+            await message.channel.send("Mauvais paramètres")
+    elif message.channel.type==discord.ChannelType.private and message.author.id in ["153201272399462400"]:
+        try:
+            if message.content.startswith("!piano"):
+                args=message.content.split(" ")[1:]
+                if len(args)>2 and args[0]=="say":
+                    channel=await bot.fetch_channel(args[1])
+                    if channel is not None:
+                        await commands.say(message,args,bot,channel)
         except (IndexError, ValueError):
             await message.channel.send("Mauvais paramètres")
 
