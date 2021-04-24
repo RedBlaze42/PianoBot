@@ -85,7 +85,7 @@ async def on_message(message):
                 if len(args)>2 and args[0]=="say":
                     channel=await bot.fetch_channel(args[1])
                     if channel is not None:
-                        await commands.say(message,args,bot,channel)
+                        await commands.say(message,args[1:],bot,channel)
         except (IndexError, ValueError):
             await message.channel.send("Mauvais paramètres")
 
