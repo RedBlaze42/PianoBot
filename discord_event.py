@@ -88,6 +88,8 @@ class DiscordEvent():
                 for user in users:
                     if not user.id==self.bot.user.id:
                         await reaction.remove(user)
+                if not self.bot.user.id in [user.id for user in users]:
+                    await reaction.add_reaction(reaction.emoji)
 
     async def close(self):
         #embed = discord.Embed(title="{} du {}:".format(self.name,self.event_date.format("DD/MM à HH:mm")), colour=discord.Colour(0x000000), description="Evènement terminé")
