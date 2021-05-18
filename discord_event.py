@@ -81,7 +81,8 @@ class DiscordEvent():
         return self.message
     
     async def remove_reactions(self):
-        reactions=(await self.update_message_state()).reactions
+        message = await self.update_message_state()
+        reactions = message.reactions
         for reaction in reactions:
             if isinstance(reaction.emoji,str) and reaction.emoji in ["✅","❌"]:
                 users = await reaction.users().flatten()
@@ -89,7 +90,7 @@ class DiscordEvent():
                     if not user.id==self.bot.user.id:
                         await reaction.remove(user)
                 if not self.bot.user.id in [user.id for user in users]:
-                    await reaction.add_reaction(reaction.emoji)
+                    await message.add_reaction(reaction.emoji)
 
     async def close(self):
         #embed = discord.Embed(title="{} du {}:".format(self.name,self.event_date.format("DD/MM à HH:mm")), colour=discord.Colour(0x000000), description="Evènement terminé")
