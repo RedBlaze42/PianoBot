@@ -103,6 +103,7 @@ async def on_raw_message_delete(payload):
 
 @bot.event
 async def on_raw_reaction_add(payload):
+    if payload.user_id == bot.user.id: return
     if payload.message_id in [event.message.id for event in bot.events]: await refresh_events()
     for event in bot.events:
         if payload.message_id==event.message.id and payload.emoji.is_unicode_emoji():
